@@ -1,8 +1,12 @@
-# Furniture HUB - Static Website Deployment
+# 🪑 Furniture HUB - Static Website Deployment
 
-This project demonstrates how to containerize a static furniture store website and deploy it using Docker and Kubernetes.
+This project demonstrates how to **containerize** a static furniture store website and deploy it using **Docker** and **Kubernetes (Minikube)**.
 
-## Project Structure
+---
+
+## 📁 Project Structure
+
+```
 .
 ├── cart.js
 ├── Dockerfile
@@ -12,107 +16,155 @@ This project demonstrates how to containerize a static furniture store website a
 ├── index.html
 ├── main.js
 └── style.css
+```
 
+---
 
-## Prerequisites
+## ✅ Prerequisites
 
 - Docker installed
 - Kubernetes cluster (Minikube recommended for local development)
-- kubectl configured
+- `kubectl` configured
 
-## Docker Setup
+---
 
-### Build the Docker Image
+## 🐳 Docker Setup
 
-bash
+### 🔨 Build the Docker Image
+
+```bash
 docker build -t furniture-hub .
-Run the Container Locally
-bash
-docker run -p 8080:8080 furniture-hub
-The website will be available at: http://localhost:8080
+```
 
-Push to Docker Hub
+### 🚀 Run the Container Locally
+
+```bash
+docker run -p 8080:8080 furniture-hub
+```
+
+Website available at: [http://localhost:8080](http://localhost:8080)
+
+### ☁️ Push to Docker Hub
+
 Tag the image:
 
-bash
+```bash
 docker tag furniture-hub dhavalpr0310/furniture-hub:latest
-Push to Docker Hub:
+```
 
-bash
+Push the image:
+
+```bash
 docker push dhavalpr0310/furniture-hub:latest
-Kubernetes Deployment
-Initial Deployment (2 replicas)
-bash
+```
+
+---
+
+## ☸️ Kubernetes Deployment
+
+### 🧱 Initial Deployment (2 replicas)
+
+```bash
 kubectl apply -f furniture-hub-deployment.yaml
+```
+
 This creates:
 
-Deployment with 2 replicas
+- Deployment with 2 replicas
+- NodePort service
 
-NodePort service
+### ⚖️ Scaled Deployment (3 replicas + LoadBalancer)
 
-Scaled Deployment (3 replicas with LoadBalancer)
-bash
+```bash
 kubectl apply -f furniture-hub-deployment-updated.yaml
-Accessing the Application
-Start Minikube tunnel (if using Minikube):
+```
 
-bash
+---
+
+## 🌐 Accessing the Application
+
+### 🔌 Start Minikube Tunnel
+
+```bash
 minikube tunnel &
-Port-forward to host IP:
+```
 
-bash
+### 🌍 Port-forward to Host IP
+
+```bash
 kubectl port-forward --address 0.0.0.0 service/furniture-hub-service 8080:80 &
-Access via:
+```
 
-Local machine: http://localhost:8080
+### 🌐 Open in Browser
 
-Network devices: http://<your-host-ip>:8080
+- Local machine: [http://localhost:8080](http://localhost:8080)
+- From other devices: `http://<your-host-ip>:8080`
 
-Kubernetes Management Commands
-Check deployment status:
+---
 
-bash
+## 🧰 Kubernetes Management Commands
+
+### 📋 Check Status
+
+```bash
 kubectl get deployments
 kubectl get pods
 kubectl get services
-Scale deployment:
+```
 
-bash
+### 📈 Scale Deployment
+
+```bash
 kubectl scale deployment furniture-hub --replicas=3
-Technical Details
-Docker Image: Node.js 18 Alpine with http-server
+```
 
-Port: 8080 (container) → 80 (service)
+---
 
-Resources:
+## ⚙️ Technical Details
 
-Limits: 0.5 CPU, 512Mi Memory
+- **Docker Image**: Node.js 18 Alpine + `http-server`
+- **Ports**:
+  - Container: `8080`
+  - Kubernetes Service: `80` → Host `8080`
+- **Resources**:
+  - Requests: `0.2 CPU`, `256Mi Memory`
+  - Limits: `0.5 CPU`, `512Mi Memory`
 
-Requests: 0.2 CPU, 256Mi Memory
+---
 
-Cleanup
-Stop port-forwarding:
+## 🧹 Cleanup
 
-bash
+### ❌ Stop Port-Forwarding
+
+```bash
 pkill -f "port-forward"
-Delete Kubernetes resources:
+```
 
-bash
+### 🧼 Delete Kubernetes Resources
+
+```bash
 kubectl delete -f furniture-hub-deployment-updated.yaml
-Notes
-The LoadBalancer service may show <pending> EXTERNAL-IP in Minikube - this is normal
+```
 
-Minikube tunnel needs to remain running for LoadBalancer to work
+---
 
-Image is publicly available at: dhavalpr0310/furniture-hub:latest
+## ⚠️ Notes
 
+- `EXTERNAL-IP` may show `<pending>` for LoadBalancer in Minikube — this is normal.
+- Keep `minikube tunnel` running for LoadBalancer access.
+- Public Docker Image: [`dhavalpr0310/furniture-hub:latest`](https://hub.docker.com/r/dhavalpr0310/furniture-hub)
+
+---
+
+## 📄 Summary
 
 This README provides:
-1. Clear project structure overview
-2. Step-by-step Docker instructions
-3. Comprehensive Kubernetes deployment guide
-4. Management and cleanup commands
-5. Technical specifications
-6. Troubleshooting notes
 
-The formatting uses proper markdown syntax for code blocks, lists, and headings to ensure good readability on GitHub or other platforms.
+- ✅ Clear project structure overview  
+- 🐳 Docker setup with build, run, and push steps  
+- ☸️ Kubernetes deployment and scaling guide  
+- 🧰 Resource management and cleanup commands  
+- ⚙️ Technical specifications  
+- 🛠️ Helpful troubleshooting notes  
+
+> ✅ Designed for readability on GitHub or any markdown-compatible platform.

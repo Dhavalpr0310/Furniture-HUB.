@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: furniture-hub
+  namespace: default
+  labels:
+    app: furniture-hub
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: furniture-hub
+  template:
+    metadata:
+      labels:
+        app: furniture-hub
+    spec:
+      containers:
+      - name: furniture-hub
+        image: dhavalpr0310/furniture-hub:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: furniture-hub-service
+  namespace: default
+spec:
+  selector:
+    app: furniture-hub
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: NodePort
